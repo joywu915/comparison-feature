@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { ProductListingPage } from './features/comparison/ProductListingPage'
 import { ComparePage } from './features/comparison/ComparePage'
-
-const EMPTY_COMPARE: { id: string; name: string; image?: string; specs: Record<string, string> }[] = []
+import type { Product } from './features/comparison/mockData'
 
 function App() {
   const [page, setPage] = useState<'listing' | 'compare'>('listing')
-  const [compareList, setCompareList] = useState(EMPTY_COMPARE)
+  const [compareList, setCompareList] = useState<Product[]>([])
 
   return page === 'listing'
     ? (

@@ -1,7 +1,6 @@
 import { MOCK_PRODUCTS, type Product } from './mockData'
 import { useState } from 'react'
 import { cn } from '../../lib/utils'
-import { Button } from '../../components/Button'
 import { Navigation } from '../../sections/Navigation'
 import { Footer, viewsonicFooterColumns } from '../../sections/Footer'
 
@@ -69,7 +68,7 @@ const SPEC_GROUPS: SpecGroup[] = [
 // Product Card (top section)
 // ─────────────────────────────────────────────
 
-function ProductCard({ product, onRemove, colIndex }: { product: Product; onRemove: () => void; colIndex: number }) {
+function ProductCard({ product, onRemove }: { product: Product; onRemove: () => void }) {
   return (
     <div className="relative flex flex-col items-center gap-3 p-4 bg-white">
       {/* Remove button */}
@@ -255,11 +254,10 @@ export function ComparePage({ onBack, products: initialProducts = MOCK_PRODUCTS 
             <div />
 
             {/* Product cards */}
-            {products.map((product, i) => (
+            {products.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                colIndex={i}
                 onRemove={() => removeProduct(product.id)}
               />
             ))}

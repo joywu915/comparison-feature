@@ -78,7 +78,7 @@ function MobileColumn({ column }: { column: FooterColumn }) {
 }
 
 export function Footer({
-  logoSrc = "/ViewSonic Corporate Logo.svg", logoText = "ViewSonic",
+  logoSrc = "/comparison-feature/viewsonic-logo.svg", logoText = "ViewSonic",
   region = 'Global',
   socialLinks = [],
   columns = [],

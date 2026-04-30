@@ -1,4 +1,5 @@
 import { cn } from '../lib/utils'
+import { Checkbox } from '../components/Checkbox'
 
 // ─────────────────────────────────────────────
 // ProductCard
@@ -32,12 +33,12 @@ export function ProductCard({
   className,
 }: ProductCardProps) {
   return (
-    <div className={cn('flex flex-col bg-white border border-[#e9e9e9] rounded-sm hover:shadow-md transition-shadow', className)}>
+    <div className={cn('flex flex-col bg-white border border-[#e9e9e9] rounded-md hover:shadow-md transition-shadow', className)}>
 
       {/* Image area */}
-      <div className="relative w-full aspect-square bg-[#f7f7f7] overflow-hidden">
+      <div className="relative w-full aspect-square bg-[#f7f7f7] overflow-hidden rounded-t-md">
         {tag && (
-          <span className="absolute top-2 left-2 bg-brand-red text-white text-[10px] font-bold px-2 py-0.5 rounded-xs z-10">
+          <span className="absolute top-2 left-2 bg-brand-red text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
             {tag}
           </span>
         )}
@@ -80,31 +81,13 @@ export function ProductCard({
         </a>
 
         {/* Add to Compare */}
-        <button
-          onClick={isInCompare ? onRemoveFromCompare : onAddToCompare}
-          className={cn(
-            'flex items-center justify-center gap-1.5 text-[12px] transition-colors mt-1',
-            isInCompare
-              ? 'text-brand-red font-medium'
-              : 'text-[#2a2a2a] hover:text-brand-red',
-          )}
-        >
-          {isInCompare ? (
-            <>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M2 7h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              Remove from Compare
-            </>
-          ) : (
-            <>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M7 2v10M2 7h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              Add to Compare
-            </>
-          )}
-        </button>
+        <div className="pt-2 border-t border-[#e9e9e9] flex justify-center">
+          <Checkbox
+            label="Add to Compare"
+            checked={isInCompare}
+            onChange={isInCompare ? onRemoveFromCompare : onAddToCompare}
+          />
+        </div>
       </div>
     </div>
   )

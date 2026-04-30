@@ -5,15 +5,16 @@
 export interface Product {
   id: string
   name: string
+  description?: string
   image?: string
   buyHref?: string
   learnMoreHref?: string
   // Listing page filters
-  category: string
-  size: string
-  resolution: string
-  refreshRate: string
-  panelType: string
+  category?: string
+  size?: string
+  resolution?: string
+  refreshRate?: string
+  panelType?: string
   // Compare page specs
   specs: Record<string, string>
 }

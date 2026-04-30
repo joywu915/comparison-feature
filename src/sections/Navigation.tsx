@@ -152,7 +152,7 @@ export function Navigation({
               {logoSrc ? (
                 <img src={logoSrc} alt={logoText} className="h-[22px]" />
               ) : (
-                <span className="text-[18px] font-bold text-brand-red">{logoText}</span>
+                <img src="/comparison-feature/viewsonic-logo.svg" alt="ViewSonic" className="h-[22px]" />
               )}
             </a>
 
