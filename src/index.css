@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* Checkbox：讓打勾符號在勾選時顯示 */
+.peer:checked~span>svg {
+  opacity: 1;
+}
+
+/* Radio：讓內圓點在選取時放大 */
+.peer:checked~span>span {
+  transform: scale(1);
+}
