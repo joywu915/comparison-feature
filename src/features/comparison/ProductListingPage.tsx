@@ -10,12 +10,12 @@ import { MOCK_PRODUCTS } from './mockData'
 import type { Product } from './mockData'
 
 const CATEGORIES = [
-  { id: 'gaming', label: 'Gaming' },
-  { id: 'colorpro', label: 'ColorPro' },
-  { id: 'workpro', label: 'WorkPro' },
-  { id: 'touch', label: 'Touch Series' },
-  { id: 'portable', label: 'Portable Series' },
-  { id: 'entertainment', label: 'Entertainment Series' },
+  { id: 'gaming', label: 'Gaming', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-gaming.webp' },
+  { id: 'colorpro', label: 'ColorPro', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-colorpro.webp' },
+  { id: 'workpro', label: 'WorkPro', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-workpro.webp' },
+  { id: 'touch', label: 'Touch Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-touch.webp' },
+  { id: 'portable', label: 'Portable Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-portable.webp' },
+  { id: 'entertainment', label: 'Entertainment Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-entertainment.webp' },
 ]
 
 const FILTER_GROUPS: FilterGroup[] = [
@@ -57,6 +57,7 @@ export function ProductListingPage({
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
   const [sortBy, setSortBy] = useState('featured')
+  const [showFullToast, setShowFullToast] = useState(false)
 
   const filteredProducts = useMemo(() => {
     return MOCK_PRODUCTS.filter(product => {
@@ -78,13 +79,27 @@ export function ProductListingPage({
   }
 
   const clearAllFilters = () => { setSelectedFilters({}); setActiveCategory(undefined) }
-  const addToCompare = (product: Product) => { if (compareList.length >= 4) return; onCompareListChange?.([...compareList, product]) }
-  const removeFromCompare = (id: string) => { onCompareListChange?.(compareList.filter(p => p.id !== id)) }
+
+  const addToCompare = (product: Product) => {
+    if (compareList.length >= 4) {
+      setShowFullToast(true)
+      return
+    }
+    onCompareListChange?.([...compareList, product])
+  }
+
+  const removeFromCompare = (id: string) => {
+    onCompareListChange?.(compareList.filter(p => p.id !== id))
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div data-page="product-listing" className="min-h-screen flex flex-col bg-white">
+
+      {/* Navigation — src/sections/Navigation.tsx */}
       <Navigation />
-      <div className="w-full bg-[#111] text-white py-12 text-center relative overflow-hidden">
+
+      {/* Hero Banner — 黑色背景大標題 */}
+      <div data-section="hero-banner" className="w-full bg-[#111] text-white text-center relative overflow-hidden h-[60vh] flex items-center justify-center">
         <div className="relative z-10">
           <p className="text-[12px] font-medium text-white/60 mb-1 uppercase tracking-widest">Gaming</p>
           <p className="text-[12px] font-medium text-white/60 mb-2">Professional Monitor</p>
@@ -92,35 +107,69 @@ export function ProductListingPage({
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
       </div>
-      <div className="w-full py-6 border-b border-[#e9e9e9]">
-        <CategoryTileRow categories={CATEGORIES} activeId={activeCategory} onSelect={id => setActiveCategory(prev => prev === id ? undefined : id)} />
+
+      {/* Category Tiles — 橫向捲動的類別選擇 — src/sections/CategoryTile.tsx */}
+      <div data-section="category-tiles" className="w-full py-6 border-b border-[#e9e9e9]">
+        <CategoryTileRow
+          categories={CATEGORIES}
+          activeId={activeCategory}
+          onSelect={id => setActiveCategory(prev => prev === id ? undefined : id)}
+        />
       </div>
-      <main className="flex-1">
+
+      {/* Main Content — Filter sidebar + Product grid */}
+      <main data-section="main-content" className="flex-1">
         <div className="mx-auto max-w-[1170px] px-6 py-6">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-[13px] text-[#767676]"><span className="font-bold text-[#2a2a2a]">{filteredProducts.length}</span> results</p>
+
+          {/* Results Bar — 結果數量 + 排序 */}
+          <div data-section="results-bar" className="flex items-center justify-between mb-4">
+            <p className="text-[13px] text-[#767676]">
+              <span className="font-bold text-[#2a2a2a]">{filteredProducts.length}</span> results
+            </p>
             <div className="flex items-center gap-2">
               <span className="text-[12px] text-[#767676]">Sort by:</span>
-              <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="text-[12px] border border-[#cfcfcf] rounded-xs px-2 py-1 text-[#2a2a2a] focus:outline-none focus:border-brand-red">
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="text-[12px] border border-[#cfcfcf] rounded-xs px-2 py-1 text-[#2a2a2a] focus:outline-none focus:border-brand-red"
+              >
                 <option value="featured">Featured</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="newest">Newest</option>
               </select>
             </div>
           </div>
+
           <div className="flex gap-6">
-            <FilterSidebar filters={FILTER_GROUPS} selectedFilters={selectedFilters} onToggleFilter={toggleFilter} onClearAll={clearAllFilters} totalResults={filteredProducts.length} />
-            <div className="flex-1">
+            {/* Filter Sidebar — 左側 filter — src/sections/FilterAccordion.tsx */}
+            <div data-section="filter-sidebar">
+              <FilterSidebar
+                filters={FILTER_GROUPS}
+                selectedFilters={selectedFilters}
+                onToggleFilter={toggleFilter}
+                onClearAll={clearAllFilters}
+                totalResults={filteredProducts.length}
+              />
+            </div>
+
+            {/* Product Grid — 右側產品列表 — src/sections/ProductCard.tsx */}
+            <div data-section="product-grid" className="flex-1">
               {filteredProducts.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <p className="text-[16px] font-medium text-[#2a2a2a] mb-2">No products found</p>
-                  <button onClick={clearAllFilters} className="text-[13px] text-brand-red underline">Clear all filters</button>
+                  <button onClick={clearAllFilters} className="text-[13px] text-brand-red underline">
+                    Clear all filters
+                  </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {filteredProducts.map(product => (
                     <ProductCard
-                      key={product.id} id={product.id} name={product.name} description={product.description}
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      description={product.description}
+                      image={product.image}
                       isInCompare={compareList.some(p => p.id === product.id)}
                       onAddToCompare={() => addToCompare(product)}
                       onRemoveFromCompare={() => removeFromCompare(product.id)}
@@ -132,8 +181,20 @@ export function ProductListingPage({
           </div>
         </div>
       </main>
+
+      {/* Footer — src/sections/Footer.tsx */}
       <Footer columns={viewsonicFooterColumns} />
-      <CompareBar products={compareList} onRemove={removeFromCompare} onClear={() => onCompareListChange?.([])} onCompare={onNavigateToCompare} />
+
+      {/* Compare Bar — 固定在底部 — src/features/comparison/CompareBar.tsx */}
+      <CompareBar
+        products={compareList}
+        onRemove={removeFromCompare}
+        onClear={() => onCompareListChange?.([])}
+        onCompare={onNavigateToCompare}
+        showFullToast={showFullToast}
+        onCloseFullToast={() => setShowFullToast(false)}
+      />
+
     </div>
   )
 }

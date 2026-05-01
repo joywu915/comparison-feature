@@ -23,6 +23,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '1',
     name: 'VA2406-H',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA2406-MH/scaled/GPG-23-MON-VA2406-MH-Product%20Photo_F01_pc_m.webp',
     description: '24" Full HD Monitor with Dual, 2W speakers and 100Hz',
     category: 'home', size: '24', resolution: '1920x1080', refreshRate: '100hz', panelType: 'va',
     specs: {
@@ -42,7 +43,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '2',
-    name: 'VA2432-H',
+    name: 'VA242-H',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA242-H/scaled/GPG-25-MON-VA242-H-Product%20Photo_F01_pc_m.webp',
     description: '24" Full HD IPS Monitor with Fast 1ms Response Time',
     category: 'home', size: '24', resolution: '1920x1080', refreshRate: '100hz', panelType: 'ips',
     specs: {
@@ -62,7 +64,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '3',
-    name: 'VA2432-MHD',
+    name: 'VA242-MHD',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA242-MHD/scaled/GPG-25-MON-VA242-MHD-Product%20Photo_F01_pc_m.webp',
     description: '24" Full HD IPS Monitor with Fast 1ms Response Time',
     category: 'home', size: '24', resolution: '1920x1080', refreshRate: '100hz', panelType: 'ips',
     specs: {
@@ -82,7 +85,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '4',
-    name: 'VA2772-H',
+    name: 'VA272-H',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA272-H/scaled/GPG-25-MON-VA272-H-Product%20Photo_F01_pc_m.webp',
     description: '27" Full HD+100Hz Monitor with Dual 2W speakers',
     category: 'home', size: '27', resolution: '1920x1080', refreshRate: '100hz', panelType: 'va',
     specs: {
@@ -102,7 +106,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '5',
-    name: 'VA2732-H2',
+    name: 'VA272-HDJ',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA272-HDJ/scaled/GPG-25-MON-VA272-HDJ-Product%20Photo_F01_pc_m.webp',
     description: '27" Full HD+100Hz Ergonomic Monitor with Fast 1ms Response',
     category: 'professional', size: '27', resolution: '1920x1080', refreshRate: '100hz', panelType: 'ips',
     specs: {
@@ -122,7 +127,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '6',
-    name: 'VA2772-MHD',
+    name: 'VA272-MHD',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA272-MHD/scaled/GPG-25-MON-VA272-MHD-Product%20Photo_F01_pc_m.webp',
     description: '27" Full HD+100Hz Ergonomic Monitor with Fast 1ms Response',
     category: 'professional', size: '27', resolution: '1920x1080', refreshRate: '100hz', panelType: 'ips',
     specs: {
@@ -142,7 +148,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '7',
-    name: 'VX2480C-2K',
+    name: 'VA3420C-2',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA272-MHD/scaled/GPG-25-MON-VA272-MHD-Product%20Photo_F01_pc_m.webp',
     description: '24" QHD Curved Monitor with KVM Switch',
     category: 'gaming', size: '24', resolution: '2560x1440', refreshRate: '100hz', panelType: 'va',
     specs: {
@@ -162,7 +169,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '8',
-    name: 'VA3456-mntj',
+    name: 'VA3456-mhdj',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA3456-MHDJ/scaled/GPG-23-MON-VA3456-mhdj-Product%20Photo_F01_pc_m.webp',
     description: '34" 1440p Ultra-Wide IPS Monitor',
     category: 'professional', size: '32', resolution: '3840x2160', refreshRate: '60hz', panelType: 'ips',
     specs: {
@@ -184,6 +192,7 @@ export const MOCK_PRODUCTS: Product[] = [
     id: '9',
     name: 'VA1655',
     description: '16" Lightweight Portable Monitor',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA1655/scaled/VA1655_F01_pc_m.webp',
     category: 'portable', size: '17', resolution: '1920x1080', refreshRate: '60hz', panelType: 'ips',
     specs: {
       'Display Size (in.)': '15.6', 'Viewable Area (in.)': '15.4', 'Panel Type': 'IPS Technology',
@@ -202,7 +211,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '10',
-    name: 'VA1608',
+    name: 'VA1650',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA1650/scaled/GPG-25-MON-VA1650-Product%20Photo_F01_pc_m.webp',
     description: '16" Full-HD Lightweight Portable Monitor',
     category: 'portable', size: '17', resolution: '1920x1080', refreshRate: '60hz', panelType: 'ips',
     specs: {
@@ -222,7 +232,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: '11',
-    name: 'VA1603',
+    name: 'VA1653',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA1653-1T/scaled/GPG-25-MON-VA1653-Product%20Photo_F01_pc_m.webp',
     description: '16" Full-HD c-glass-right Monitor',
     category: 'portable', size: '17', resolution: '1920x1080', refreshRate: '60hz', panelType: 'ips',
     specs: {
@@ -243,6 +254,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: '12',
     name: 'VA709',
+    image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/slides/_lcd_display_%28new%29/VA709/scaled/GPG-24-MON-VA709-Product%20Photo_F01_pc_m.webp',
     description: '17" Home and Office Monitor',
     category: 'home', size: '17', resolution: '1920x1080', refreshRate: '60hz', panelType: 'tn',
     specs: {

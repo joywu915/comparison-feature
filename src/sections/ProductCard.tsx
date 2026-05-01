@@ -36,14 +36,20 @@ export function ProductCard({
     <div className={cn('flex flex-col bg-white border border-[#e9e9e9] rounded-md hover:shadow-md transition-shadow', className)}>
 
       {/* Image area */}
-      <div className="relative w-full aspect-square bg-[#f7f7f7] overflow-hidden rounded-t-md">
+      <div className="relative w-full aspect-square overflow-hidden rounded-t-md">
         {tag && (
           <span className="absolute top-2 left-2 bg-brand-red text-white text-[10px] font-bold px-2 py-0.5 rounded-md z-10">
             {tag}
           </span>
         )}
         {image ? (
-          <img src={image} alt={name} className="w-full h-full object-contain p-4" />
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-contain p-4"
+            onLoad={() => console.log('Image loaded:', image)}
+            onError={(e) => console.log('Image failed to load', image, e)}
+          />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden>
