@@ -1,27 +1,19 @@
-import { useState } from 'react'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import { ProductListingPage } from './features/comparison/ProductListingPage'
 import { ComparePage } from './features/comparison/ComparePage'
-import type { Product } from './features/comparison/mockData'
+import { CompareProvider } from './features/comparison/CompareContext'
 
 function App() {
-  const [page, setPage] = useState<'listing' | 'compare'>('listing')
-  const [compareList, setCompareList] = useState<Product[]>([])
-
-  return page === 'listing'
-    ? (
-      <ProductListingPage
-        compareList={compareList}
-        onCompareListChange={setCompareList}
-        onNavigateToCompare={() => setPage('compare')}
-      />
-    )
-    : (
-      <ComparePage
-        products={compareList}
-        onBack={() => setPage('listing')}
-        onProductsChange={setCompareList}
-      />
-    )
+  return (
+    <CompareProvider>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<ProductListingPage />} />
+          <Route path="/compare" element={<ComparePage />} />
+        </Routes>
+      </HashRouter>
+    </CompareProvider>
+  )
 }
 
 export default App

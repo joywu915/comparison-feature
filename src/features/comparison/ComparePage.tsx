@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useCompare } from './CompareContext'
 import { cn } from '../../lib/utils'
 import { Navigation } from '../../sections/Navigation'
 import { Button } from '../../components/Button'
 import { Footer, viewsonicFooterColumns } from '../../sections/Footer'
-import { MOCK_PRODUCTS, type Product } from './mockData'
+import { type Product, MOCK_PRODUCTS } from './mockData'
 
 export interface SpecGroup {
   title: string
@@ -137,12 +139,22 @@ function SpecGroupSection({ group, products, showDiffOnly, maxSlots, isMobile }:
 // ─────────────────────────────────────────────
 // ComparePage
 // ─────────────────────────────────────────────
-export function ComparePage({ onBack, products: initialProducts = MOCK_PRODUCTS, onProductsChange }: {
-  onBack?: () => void
-  products?: Product[]
-  onProductsChange?: (products: Product[]) => void
-}) {
-  const [products, setProducts] = useState<Product[]>(initialProducts)
+export function ComparePage() {
+  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { compareList, setCompareList } = useCompare()
+
+  const initProducts = (): Product[] => {
+    const idsParam = searchParams.get('ids')
+    if (idsParam) {
+      const ids = idsParam.split(',')
+      const fromUrl = ids.map(id => MOCK_PRODUCTS.find(p => p.id === id)).filter((p): p is Product => !!p)
+      if (fromUrl.length > 0) return fromUrl
+    }
+    return compareList
+  }
+
+  const [products, setProducts] = useState<Product[]>(initProducts)
   const [showDiffOnly, setShowDiffOnly] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
@@ -184,10 +196,15 @@ export function ComparePage({ onBack, products: initialProducts = MOCK_PRODUCTS,
   const removeProduct = (id: string) => {
     const updated = products.filter(p => p.id !== id)
     setProducts(updated)
-    onProductsChange?.(updated)
+    setCompareList(updated)
+    if (updated.length > 0) {
+      setSearchParams({ ids: updated.map(p => p.id).join(',') }, { replace: true })
+    } else {
+      setSearchParams({}, { replace: true })
+    }
   }
 
-  const addProduct = () => onBack?.()
+  const addProduct = () => navigate('/')
 
   const maxSlots = 4
   const emptySlots = maxSlots - products.length
@@ -205,9 +222,9 @@ export function ComparePage({ onBack, products: initialProducts = MOCK_PRODUCTS,
         {/* Page Header + Controls */}
         <div className="mx-auto max-w-[1170px] px-4 md:px-6 py-6 md:py-10">
           <div className="flex flex-col items-center gap-2 mb-6 md:mb-8">
-            {onBack && (
+            {(
               <button
-                onClick={onBack}
+                onClick={() => navigate('/')}
                 className="flex items-center gap-1 text-[13px] text-[#767676] hover:text-brand-red transition-colors mb-2 md:mb-4"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>

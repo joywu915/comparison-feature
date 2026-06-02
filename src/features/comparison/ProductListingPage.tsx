@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useCompare } from './CompareContext'
 import { Navigation } from '../../sections/Navigation'
 import { Footer, viewsonicFooterColumns } from '../../sections/Footer'
 import { ProductCard } from '../../sections/ProductCard'
@@ -45,15 +47,9 @@ const FILTER_GROUPS: FilterGroup[] = [
   },
 ]
 
-export function ProductListingPage({
-  onNavigateToCompare,
-  compareList = [],
-  onCompareListChange,
-}: {
-  onNavigateToCompare?: () => void
-  compareList?: Product[]
-  onCompareListChange?: (list: Product[]) => void
-}) {
+export function ProductListingPage() {
+  const navigate = useNavigate()
+  const { compareList, setCompareList } = useCompare()
   const [activeCategory, setActiveCategory] = useState<string | undefined>(undefined)
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
   const [sortBy, setSortBy] = useState('featured')
@@ -85,11 +81,11 @@ export function ProductListingPage({
       setShowFullToast(true)
       return
     }
-    onCompareListChange?.([...compareList, product])
+    setCompareList([...compareList, product])
   }
 
   const removeFromCompare = (id: string) => {
-    onCompareListChange?.(compareList.filter(p => p.id !== id))
+    setCompareList(compareList.filter(p => p.id !== id))
   }
 
   return (
@@ -99,14 +95,14 @@ export function ProductListingPage({
       <Navigation />
 
       {/* Hero Banner */}
-      <div data-section="hero-banner" className="w-full bg-[#111] text-white text-center relative overflow-hidden h-[60vh] flex items-center justify-center">
+      {/* <div data-section="hero-banner" className="w-full bg-[#111] text-white text-center relative overflow-hidden h-[60vh] flex items-center justify-center">
         <div className="relative z-10">
           <p className="text-[12px] font-medium text-white/60 mb-1 uppercase tracking-widest">Gaming</p>
           <p className="text-[12px] font-medium text-white/60 mb-2">Professional Monitor</p>
           <h1 className="text-[32px] md:text-[40px] font-bold leading-tight">Your Vision. Precisely.</h1>
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
-      </div>
+      </div>*/}
 
       {/* Category Tiles */}
       <div data-section="category-tiles" className="w-full py-6 border-b border-[#e9e9e9]">
@@ -204,8 +200,8 @@ export function ProductListingPage({
       <CompareBar
         products={compareList}
         onRemove={removeFromCompare}
-        onClear={() => onCompareListChange?.([])}
-        onCompare={onNavigateToCompare}
+        onClear={() => setCompareList([])}
+        onCompare={() => navigate(`/compare?ids=${compareList.map(p => p.id).join(',')}`)}
         showFullToast={showFullToast}
         onCloseFullToast={() => setShowFullToast(false)}
       />
