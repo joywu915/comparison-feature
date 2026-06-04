@@ -1,24 +1,14 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useCompare } from './CompareContext'
 import { Navigation } from '../../sections/Navigation'
 import { Footer, viewsonicFooterColumns } from '../../sections/Footer'
 import { ProductCard } from '../../sections/ProductCard'
-import { CategoryTileRow } from '../../sections/CategoryTile'
 import { FilterSidebar } from '../../sections/FilterAccordion'
 import type { FilterGroup } from '../../sections/FilterAccordion'
 import { CompareBar } from './CompareBar'
 import { MOCK_PRODUCTS } from './mockData'
 import type { Product } from './mockData'
-
-const CATEGORIES = [
-  { id: 'gaming', label: 'Gaming', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-gaming.webp' },
-  { id: 'colorpro', label: 'ColorPro', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-colorpro.webp' },
-  { id: 'workpro', label: 'WorkPro', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-workpro.webp' },
-  { id: 'touch', label: 'Touch Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-touch.webp' },
-  { id: 'portable', label: 'Portable Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-portable.webp' },
-  { id: 'entertainment', label: 'Entertainment Series', image: 'https://www.viewsonic.com/vsAssetFile/global/img/resize/lcd/filter-series/series-entertainment.webp' },
-]
 
 const FILTER_GROUPS: FilterGroup[] = [
   {
@@ -54,6 +44,8 @@ export function ProductListingPage() {
   const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({})
   const [sortBy, setSortBy] = useState('featured')
   const [showFullToast, setShowFullToast] = useState(false)
+  const [addedRibbon, setAddedRibbon] = useState<string | null>(null)
+  const ribbonTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const filteredProducts = useMemo(() => {
     return MOCK_PRODUCTS.filter(product => {
@@ -82,6 +74,9 @@ export function ProductListingPage() {
       return
     }
     setCompareList([...compareList, product])
+    setAddedRibbon(product.name)
+    if (ribbonTimerRef.current) clearTimeout(ribbonTimerRef.current)
+    ribbonTimerRef.current = setTimeout(() => setAddedRibbon(null), 4000)
   }
 
   const removeFromCompare = (id: string) => {
@@ -94,6 +89,31 @@ export function ProductListingPage() {
       {/* Navigation */}
       <Navigation />
 
+      {/* Added-to-compare ribbon */}
+      {addedRibbon && (
+        <div className="sticky top-[88px] z-40 w-full bg-[#f0faf0] border-b border-[#c3e6c3] px-6 py-3 flex items-center justify-center relative">
+          <div className="flex items-center gap-2 text-[13px] text-[#2a2a2a]">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden className="flex-shrink-0">
+              <circle cx="8" cy="8" r="7" stroke="#3a9e3a" strokeWidth="1.5" />
+              <path d="M4.5 8l2.5 2.5 4.5-4.5" stroke="#3a9e3a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>
+              You added product <span className="font-medium">{addedRibbon}</span> to the{' '}
+              <span className="text-brand-red font-medium">comparison list</span>.
+            </span>
+          </div>
+          <button
+            onClick={() => setAddedRibbon(null)}
+            aria-label="Dismiss"
+            className="absolute right-6 text-[#767676] hover:text-[#2a2a2a] transition-colors"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* Hero Banner */}
       {/* <div data-section="hero-banner" className="w-full bg-[#111] text-white text-center relative overflow-hidden h-[60vh] flex items-center justify-center">
         <div className="relative z-10">
@@ -105,7 +125,7 @@ export function ProductListingPage() {
       </div>*/}
 
       {/* Category Tiles */}
-      <div data-section="category-tiles" className="w-full py-6 border-b border-[#e9e9e9]">
+      {/* <div data-section="category-tiles" className="w-full py-6 border-b border-[#e9e9e9]">
         <CategoryTileRow
           categories={CATEGORIES}
           activeId={activeCategory}

@@ -164,6 +164,10 @@ export function ComparePage() {
   const isSyncing = useRef(false)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -221,18 +225,17 @@ export function ComparePage() {
 
         {/* Page Header + Controls */}
         <div className="mx-auto max-w-[1170px] px-4 md:px-6 py-6 md:py-10">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center gap-1 text-[13px] text-[#767676] hover:text-brand-red transition-colors self-start mb-4"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Previous page
+          </button>
+
           <div className="flex flex-col items-center gap-2 mb-6 md:mb-8">
-            {(
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-1 text-[13px] text-[#767676] hover:text-brand-red transition-colors mb-2 md:mb-4"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-                  <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Back to Products
-              </button>
-            )}
             <h1 className="text-[24px] md:text-[32px] font-bold text-[#2a2a2a]">Compare Products</h1>
             <a href="#" className="text-[13px] text-[#2a2a2a] underline underline-offset-2 hover:text-brand-red flex items-center gap-1">
               Contact Sales
@@ -242,7 +245,7 @@ export function ComparePage() {
             </a>
           </div>
 
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center justify-between mb-4">
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -252,7 +255,30 @@ export function ComparePage() {
               />
               <span className="text-[12px] text-[#2a2a2a]">Show Differences Only</span>
             </label>
-            <div className="hidden md:block">
+            <div className="hidden md:flex items-center gap-2">
+              <Button
+                variant="secondary"
+                leftIcon={
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
+                    <path d="M7 2v7M4 6l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M2 11h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                }
+                onClick={() => {
+                  const headers = ['Spec', ...products.map(p => p.name)]
+                  const rows = SPEC_GROUPS.flatMap(g =>
+                    g.specs.map(spec => [spec, ...products.map(p => p.specs[spec] ?? '—')])
+                  )
+                  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n')
+                  const blob = new Blob([csv], { type: 'text/csv' })
+                  const url = URL.createObjectURL(blob)
+                  const a = document.createElement('a')
+                  a.href = url; a.download = 'comparison.csv'; a.click()
+                  URL.revokeObjectURL(url)
+                }}
+              >
+                Download CSV
+              </Button>
               <Button
                 variant="secondary"
                 leftIcon={
