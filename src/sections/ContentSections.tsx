@@ -270,7 +270,7 @@ export function AnchorNav({ links, activeHref, sticky = true, className }: Ancho
         <div className="flex items-center gap-0 overflow-x-auto scrollbar-none">
           {links.map((link) => (
             <AnchorLink
-              key={link.href}
+              key={`${link.href}-${link.title}`}
               {...link}
               active={activeHref ? link.href === activeHref : link.active}
             />
