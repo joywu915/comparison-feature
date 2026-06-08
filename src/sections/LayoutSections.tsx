@@ -134,7 +134,7 @@ export function Navigation({ logo, logoText = 'ViewSonic', links = [], ctaButton
           </a>
           <nav className="hidden md:flex items-center gap-0 flex-1">
             {links.map((link) => (
-              <a key={link.href} href={link.href} className="px-200 py-100 text-p-sm font-medium text-text-secondary hover:text-brand-red transition-colors duration-150 whitespace-nowrap">
+              <a key={`${link.href}-${link.label}`} href={link.href} className="px-200 py-100 text-p-sm font-medium text-text-secondary hover:text-brand-red transition-colors duration-150 whitespace-nowrap">
                 {link.label}
               </a>
             ))}
@@ -153,7 +153,7 @@ export function Navigation({ logo, logoText = 'ViewSonic', links = [], ctaButton
         {mobileOpen && (
           <nav className="flex flex-col border-t border-border-default py-200 md:hidden">
             {links.map((link) => (
-              <a key={link.href} href={link.href} className="py-150 px-100 text-p-sm font-medium text-text-secondary hover:text-brand-red">{link.label}</a>
+              <a key={`${link.href}-${link.label}`} href={link.href} className="py-150 px-100 text-p-sm font-medium text-text-secondary hover:text-brand-red">{link.label}</a>
             ))}
             {ctaButton && (
               <div className="pt-200">
@@ -210,7 +210,7 @@ export function Footer({ logo, logoText = 'ViewSonic', tagline, columns = [], so
             <div key={col.title} className="flex flex-col gap-150">
               <p className="text-p-sm font-semibold text-white">{col.title}</p>
               {col.links.map((link) => (
-                <a key={link.href} href={link.href} className="text-p-sm text-white/60 hover:text-white transition-colors">{link.label}</a>
+                <a key={`${link.href}-${link.label}`} href={link.href} className="text-p-sm text-white/60 hover:text-white transition-colors">{link.label}</a>
               ))}
             </div>
           ))}

@@ -122,7 +122,7 @@ export function Navigation({
             {/* Vertical links */}
             {verticals.map((v) => (
               <a
-                key={v.href}
+                key={v.label}
                 href={v.href}
                 className="flex items-center justify-center h-full px-4 text-[12px] font-normal text-[#2a2a2a] hover:bg-gray-200 transition-colors whitespace-nowrap"
               >
@@ -158,16 +158,16 @@ export function Navigation({
 
             {/* Desktop nav links */}
             <nav className="hidden md:flex items-center gap-6">
-              {links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="flex items-center gap-2 text-[14px] font-normal text-[#2a2a2a] hover:text-brand-red transition-colors whitespace-nowrap"
-                >
-                  {link.label}
-                  <ChevronDown />
-                </a>
-              ))}
+                {links.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="flex items-center gap-2 text-[14px] font-normal text-[#2a2a2a] hover:text-brand-red transition-colors whitespace-nowrap"
+                  >
+                    {link.label}
+                    <ChevronDown />
+                  </a>
+                ))}
             </nav>
           </div>
 
@@ -216,7 +216,7 @@ export function Navigation({
           <div className="md:hidden border-t border-border-default mt-3 pt-3 flex flex-col gap-2">
             {links.map((link) => (
               <a
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 className="flex items-center justify-between py-2 text-[14px] text-[#2a2a2a] hover:text-brand-red"
               >
